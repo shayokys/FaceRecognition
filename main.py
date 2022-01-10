@@ -6,7 +6,6 @@ from scipy.spatial import distance
 flag=False
 for filename in os.listdir('faces'):
 
-    #print(filename)
     # Получение изображения с вебкамеры и сохранение его
     cap = cv2.VideoCapture(0)
     # "Прогреваем" камеру, чтобы снимок не был тёмным
@@ -27,16 +26,13 @@ for filename in os.listdir('faces'):
     sp = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
     facerec = dlib.face_recognition_model_v1('dlib_face_recognition_resnet_model_v1.dat')
     detector = dlib.get_frontal_face_detector()
-    #print(filename)
     # proccessing the first picture
     image_1 = cv2.imread('cam.png')
     faces_1 = detector(image_1, 1)
-    #print(filename)
     shape = sp(image_1, faces_1[0])
     face_descriptor_1 = facerec.compute_face_descriptor(image_1, shape)
 
     # proccessing the second picture
-    #print(filename)
     image_2 = cv2.imread('faces/'+filename)
     faces_2 = detector(image_2, 1)
     shape = sp(image_2, faces_2[0])
@@ -46,11 +42,8 @@ for filename in os.listdir('faces'):
     result = distance.euclidean(face_descriptor_1, face_descriptor_2)
 
     if result < 0.6:
-        #print('С большей вероятностью это один и тот же человек')
         flag=True
         break
-    #else:
-        #print('С большей вероятностью это разные люди!!!')
 if(flag==True):
     print('Доступ разрешен!')
 else:
